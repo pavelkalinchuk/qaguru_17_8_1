@@ -25,7 +25,10 @@ class TestProducts:
 
     def test_product_buy(self, product):
         # TODO напишите проверки на метод buy
-        pass
+        quantity_in_stock = product.quantity  # Начальное количество товара на складе
+        required_quantity = 1000  # Запрашиваемое количество товара (при > 1000 - ValueError: "Товара не хватает!!!")
+        product.buy(required_quantity)  # Покупка товара с проверкаой на наличие запрашиваемого количества
+        assert product.quantity == quantity_in_stock - required_quantity  # Проверяем остаток на складе на соответствие
 
     def test_product_buy_more_than_available(self, product):
         # TODO напишите проверки на метод buy,
