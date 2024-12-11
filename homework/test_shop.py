@@ -4,11 +4,17 @@
 import pytest
 
 from homework.models import Product
+from homework.models import Cart
 
 
 @pytest.fixture
 def product():
     return Product("book", 100, "This is a book", 1000)
+
+
+@pytest.fixture
+def cart():
+    return Cart()
 
 
 class TestProducts:
@@ -44,3 +50,28 @@ class TestCart:
         На некоторые методы у вас может быть несколько тестов.
         Например, негативные тесты, ожидающие ошибку (используйте pytest.raises, чтобы проверить это)
     """
+
+    def test_add_product_in_cart(self, cart, product):
+        """
+        Добавляем продукт в корзину.
+        Проверяем что продукт добавился в корзину и в верном количесвте
+        """
+        cart.add_product(product, 10)
+        print(product)
+        assert cart.products[product] == 10
+        assert product in cart.products.keys()
+
+    def test_add_product_in_cart_more(self, cart, product):
+        """
+        Добавляем продукт в корзину
+        Увеличиваем его количество
+        Проверяем что продукт добавился в корзину и увеличился в количестве при повторном обращении
+        С учётом того, что при каждом запуске метода, идентификатор продукта меняется, то пришлось завести
+        переменную product_2, скинуть идентификатор полученный при первом вызове и использовать его при
+        повторном вызове что бы в карзине выполнилось требования по увеличению количества уже имеющегося продукта
+        """
+        cart.add_product(product, 10)
+        product_2 = product
+        cart.add_product(product_2, 10)
+        assert cart.products[product] == 20
+        assert product in cart.products.keys()
