@@ -119,3 +119,9 @@ class TestCart:
         cart.remove_product(notebook, 100)
         assert notebook not in cart.products.keys()
         assert cart.products[book] == 300
+
+    def test_clear_cart(self, cart, book, notebook):
+        cart.add_product(book, 30)
+        cart.add_product(notebook, 30)
+        cart.clear()
+        assert not cart.products
