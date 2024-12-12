@@ -146,6 +146,8 @@ class TestCart:
         """
         cart.add_product(book, 200)
         cart.add_product(notebook, 250)
+        cart.buy()
+        assert not cart.products
 
     def test_buy_error(self, cart, book, notebook):
         with pytest.raises(ValueError):
