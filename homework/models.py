@@ -76,7 +76,10 @@ class Cart:
         self.products.clear()
 
     def get_total_price(self) -> float:
-        raise NotImplementedError
+        total_price = 0.0
+        for product, count in self.products.items():
+            total_price += product.price * count
+        return float(total_price)
 
     def buy(self):
         """
@@ -84,4 +87,11 @@ class Cart:
         Учтите, что товаров может не хватать на складе.
         В этом случае нужно выбросить исключение ValueError
         """
-        raise NotImplementedError
+        for product, quantity in self.products.items():
+            if quantity > product.quantity:
+                raise ValueError("Товара не хватает!!!")
+        for product, quantity in self.products.items():
+            product.quantity -= quantity
+
+        self.products.clear()
+

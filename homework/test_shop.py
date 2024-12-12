@@ -14,7 +14,7 @@ def book():
 
 @pytest.fixture
 def notebook():
-    return Product("notebook", price=35.50, description="White Notebook", quantity=300)
+    return Product("notebook", 35.50, "White Notebook", 300)
 
 
 @pytest.fixture
@@ -58,8 +58,8 @@ class TestCart:
 
     def test_add_product_in_cart(self, cart, book):
         """
-        Добавляем продукт в корзину.
-        Проверяем что продукт добавился в корзину и в верном количесвте
+        Добавляем твоар в корзину.
+        Проверяем что твоар добавился в корзину и в верном количесвте
         """
         cart.add_product(book, 10)
         assert cart.products[book] == 10
@@ -67,9 +67,9 @@ class TestCart:
 
     def test_add_product_in_cart_more(self, cart, book):
         """
-        Добавляем продукт в корзину
+        Добавляем товар в корзину
         Увеличиваем его количество
-        Проверяем что продукт добавился в корзину и увеличился в количестве при повторном обращении
+        Проверяем что товар добавился в корзину и увеличился в количестве при повторном обращении
         """
         cart.add_product(book, 10)
         cart.add_product(book, 10)
@@ -107,10 +107,10 @@ class TestCart:
 
     def test_remove_product_partially_2(self, cart, book, notebook):
         """
-        Добавляем продукты в корзину
-        Проверяем что продукты добавились в корзину
-        Удаляем полностью один продукт путём превышения количества в корзине
-        Второй оставляем нетронутым
+        Добавляем товары в корзину
+        Проверяем что товары добавились в корзину
+        Удаляем полностью один товар путём превышения количества в корзине
+        Второй товар оставляем нетронутым
         Проверяем, что осталось в корзине
         """
         cart.add_product(notebook, 50)
@@ -121,7 +121,34 @@ class TestCart:
         assert cart.products[book] == 300
 
     def test_clear_cart(self, cart, book, notebook):
+        """
+        Добавляем товары в карзину
+        Очищаем карзину
+        Проверияем что корзина пуста
+        """
         cart.add_product(book, 30)
         cart.add_product(notebook, 30)
         cart.clear()
         assert not cart.products
+
+    def test_get_total_price(self, cart, book, notebook):
+        """
+        Добавляем товары в карзину
+        Получаем сумму и проверияем, что сумма больше нуля
+        """
+        cart.add_product(book, 54)
+        cart.add_product(notebook, 13)
+        assert cart.get_total_price() > 0
+
+    def test_buy(self, cart, book, notebook):
+        """
+        Добавляем товары в карзину
+        """
+        cart.add_product(book, 200)
+        cart.add_product(notebook, 250)
+
+    def test_buy_error(self, cart, book, notebook):
+        with pytest.raises(ValueError):
+            cart.add_product(book, 2000)
+            cart.add_product(notebook, 1000)
+            cart.buy()
