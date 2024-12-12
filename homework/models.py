@@ -73,9 +73,15 @@ class Cart:
                 self.products[product] -= remove_count
 
     def clear(self):
+        """
+        Метод очищения корзины
+        """
         self.products.clear()
 
     def get_total_price(self) -> float:
+        """
+        Метод подсчёта полной стоитмости товара в корзине
+        """
         total_price = 0.0
         for product, count in self.products.items():
             total_price += product.price * count
@@ -94,4 +100,3 @@ class Cart:
             product.quantity -= quantity
 
         self.products.clear()
-
